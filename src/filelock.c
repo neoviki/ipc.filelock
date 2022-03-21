@@ -14,41 +14,53 @@
 #include <unistd.h>
 #include "filelock.h"
 
-int flock_open(char *fname)
+filelock_t *flock_open(char *fname)
 {
-    int fd;
-    if(!fname) return -1;
+    if(!fname) return NULL;
 
-    fd  = open (fname, O_CREAT | O_RDONLY, 0666);
+    filelock_t *fl = (filelock_t *) calloc(1, sizeof(filelock_t));
 
-    if(fd < 0){
+    if(!fl) {
+        printf("OOM\n");
+        return NULL;
+    }
+
+    fl->fd  = open (fname, O_CREAT | O_RDONLY, 0666);
+
+    if(fl->fd < 0){
+        free(fl);
         printf("error: creating file (%s)\n", fname);
-        return -1;
+        return NULL;
     }	
 
-    return fd;
+    return fl;
 }
 
-int flock_lock(int fd)
+int flock_lock(filelock_t *fl)
 {
     int ret;
+    if(!fl) return -1;
     while(1){
-        ret = flock(fd, LOCK_EX);
+        ret = flock(fl->fd, LOCK_EX);
         if(ret == 0) return 0;
+        //10ms
         usleep(10000);
     }
     return 0;
 }
 
-int flock_unlock(int fd)
+int flock_unlock(filelock_t *fl)
 {
-    flock(fd, LOCK_UN);
+    if(!fl) return -1;
+    flock(fl->fd, LOCK_UN);
     return 0;
 }
 
-int flock_close(int fd)
+int flock_close(filelock_t *fl)
 {
-    if(fd<0) return -1;
-    close(fd);
+    if(!fl) return -1;
+    if(fl->fd<0) return -1;
+    close(fl->fd);
+    free(fl);
     return 0;
 }

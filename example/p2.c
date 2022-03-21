@@ -4,21 +4,22 @@
 
 int main()
 {
-    int lock_id = flock_open("/tmp/lock_file.txt");
+    filelock_t *fl = flock_open("/tmp/lock_file.txt");
 
-    if(lock_id<0){
+    if(fl==NULL){
         printf("error: open()\n");
+        return -1;
     }
 
     while(1){
         printf("p2_wait()\n");
-        flock_lock(lock_id);
+        flock_lock(fl);
         printf("p2_lock()\n");
         sleep (1);
-        flock_unlock(lock_id);
+        flock_unlock(fl);
         printf("p2_unlock()\n");
         sleep (1);
     }
-    flock_close(lock_id);
+    flock_close(fl);
     return 0;
 }
