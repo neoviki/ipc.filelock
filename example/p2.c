@@ -17,6 +17,7 @@ int main()
         sleep (1);
         flock_unlock(lock_id);
         printf("p2_unlock()\n");
+        sleep (1);
     }
     flock_close(lock_id);
     return 0;
