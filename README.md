@@ -1,10 +1,10 @@
-## File lock library 
+## IPC File lock library 
 
-File Lock libary based on flock
+IPC File Lock libary based on flock
 
 ## Source
 
-    - src/filelock.c
+    - src/ipc_flock.c
 
 ## Example
 
@@ -25,12 +25,12 @@ File Lock libary based on flock
 
 ## Latency
 
-    I didn't research on the latency yet. It works well in the above stated scenario. 
+    I didn't research on the latency yet.
 
 
 ## Use Case
 
 
-    1. We can use this locking to procvide exclusive access to shared memory.  
+    1. We can use this locking to provide exclusive access to shared memory.  
 
 

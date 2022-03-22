@@ -12,13 +12,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "filelock.h"
+#include "ipc_flock.h"
 
-filelock_t *flock_open(char *fname)
+ipc_flock_t *ipc_flock_open(char *fname)
 {
     if(!fname) return NULL;
 
-    filelock_t *fl = (filelock_t *) calloc(1, sizeof(filelock_t));
+    ipc_flock_t *fl = (ipc_flock_t *) calloc(1, sizeof(ipc_flock_t));
 
     if(!fl) {
         printf("OOM\n");
@@ -36,7 +36,7 @@ filelock_t *flock_open(char *fname)
     return fl;
 }
 
-int flock_lock(filelock_t *fl)
+int ipc_flock_lock(ipc_flock_t *fl)
 {
     int ret;
     if(!fl) return -1;
@@ -49,14 +49,14 @@ int flock_lock(filelock_t *fl)
     return 0;
 }
 
-int flock_unlock(filelock_t *fl)
+int ipc_flock_unlock(ipc_flock_t *fl)
 {
     if(!fl) return -1;
     flock(fl->fd, LOCK_UN);
     return 0;
 }
 
-int flock_close(filelock_t *fl)
+int ipc_flock_close(ipc_flock_t *fl)
 {
     if(!fl) return -1;
     if(fl->fd<0) return -1;
