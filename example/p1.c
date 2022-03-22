@@ -4,6 +4,7 @@
 
 int main()
 {
+    int ctr = 0;
     filelock_t *fl = flock_open("/tmp/lock_file.txt");
     
     if(fl==NULL){
@@ -11,14 +12,15 @@ int main()
         return -1;
     }
 
-    while(1){
+    while(ctr < 100){
+        ctr++;
         printf("p1_wait()\n");
         flock_lock(fl);
         printf("p1_lock()\n");
-        sleep (10);
+        sleep (1);
         flock_unlock(fl);
         printf("p1_unlock()\n");
-        sleep(2);
+        sleep(1);
     }
     flock_close(fl);
     return 0;
