@@ -17,10 +17,10 @@ int main()
         printf("p1_wait()\n");
         flock_lock(fl);
         printf("p1_lock()\n");
-        sleep (1);
+        sleep (10);
         flock_unlock(fl);
         printf("p1_unlock()\n");
-        sleep(1);
+        sleep(10);
     }
     flock_close(fl);
     return 0;
